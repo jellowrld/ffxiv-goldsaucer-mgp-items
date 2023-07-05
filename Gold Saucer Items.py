@@ -77,5 +77,5 @@ def x():
 		elif B.lower()=='exit':break
 		else:A('Invalid command\n')
 		A()
-	A('Good luck getting all your MGP!')
+	A('GG, Have Fun farming.')
 if __name__=='__main__':x()
