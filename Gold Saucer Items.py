@@ -1,99 +1,101 @@
-mounts = {
-    'Adamantoise Whistle': 200000,
-    'Pod 602 Identification Key': 300000,
-    'Archon Throne': 750000,
-    'Korpokkur Kolossus Horn': 750000,
-    'Typhon Horn': 750000,
-    'Fenrir Horn': 1000000,
-    'Sabotender Emperador Horn': 2000000,
-    'Blackjack Identification Key': 4000000
+import tkinter as tk
+from tkinter import ttk
+
+# Data
+ITEMS = {
+    "Mounts": {
+        'Adamantoise Whistle': 200000,
+        'Pod 602 Identification Key': 300000,
+        'Archon Throne': 750000,
+        'Korpokkur Kolossus Horn': 750000,
+        'Typhon Horn': 750000,
+        'Fenrir Horn': 1000000,
+        'Sabotender Emperador Horn': 2000000,
+        'Blackjack Identification Key': 4000000
+    },
+    "Emotes": {
+        '/biggrin': 20000,
+        'Thav Dance': 80000,
+        'Gold Dance': 80000,
+        'Bees Knees': 80000,
+        '/draw': 100000,
+        '/sheathe': 100000
+    },
+    "Minions": {
+        'Water Imp': 10000,
+        'Zu Hatchling': 10000,
+        'Black Coeurl': 20000,
+        'Heavy Hatchling': 20000,
+        'Wind-Up Nero tol Scaeva': 30000,
+        'Piggy': 30000,
+        'Unlucky Rabbit': 30000,
+        'Mama Automaton': 30000
+    },
+    "Hairstyles": {
+        'Pony Tails': 8000,
+        'Curls': 9600,
+        'Great Lengths': 30000,
+        'Lexen Tails': 50000
+    },
+    "Others": {
+        'Gambler Barding': 20000,
+        'False Spectacles': 100000,
+        'Manderville Barding': 150000,
+        'Gold Paper Parasol': 200000,
+        'Angel Wings': 500000
+    }
 }
 
-emotes = {
-    '/biggrin': 20000,
-    'Thav Dance': 80000,
-    'Gold Dance': 80000,
-    'Bees Knees': 80000,
-    '/draw': 100000,
-    '/sheathe': 100000
-}
-
-minions = {
-    'Water Imp': 10000,
-    'Zu Hatchling': 10000,
-    'Black Coeurl': 20000,
-    'Heavy Hatchling': 20000,
-    'Wind-Up Nero tol Scaeva': 30000,
-    'Piggy': 30000,
-    'Unlucky Rabbit': 30000,
-    'Mama Automaton': 30000
-}
-
-hairstyles = {
-    'Pony Tails': 8000,
-    'Curls': 9600,
-    'Great Lengths': 30000,
-    'Lexen Tails': 50000
-}
-
-others = {
-    'Gambler Barding': 20000,
-    'False Spectacles': 100000,
-    'Manderville Barding': 150000,
-    'Gold Paper Parasol': 200000,
-    'Angel Wings': 500000
-}
-
-def print_items(item_dict, item_type):
-    print(f"{item_type}:\t\tMGP cost")
-    print("------------------------------")
+# GUI functions
+def display_items(item_dict, item_type):
+    text_area.config(state=tk.NORMAL)
+    text_area.delete('1.0', tk.END)
+    text_area.insert(tk.END, f"{item_type}:\t\tMGP cost\n")
+    text_area.insert(tk.END, "------------------------------\n")
     for item, cost in item_dict.items():
-        print(f"{item}:\t{cost}")
-    print(f"Total {item_type} cost:\t{sum(item_dict.values()):,} MGP\n")
+        text_area.insert(tk.END, f"{item}:\t{cost:,} MGP\n")
+    text_area.insert(tk.END, f"\nTotal {item_type} cost:\t{sum(item_dict.values()):,} MGP\n")
+    text_area.config(state=tk.DISABLED)
 
-def print_total_cost():
-    total_cost = sum(mounts.values()) + sum(emotes.values()) + sum(minions.values()) + sum(hairstyles.values()) + sum(others.values())
-    print(f"Grand total: {total_cost:,} MGP\n")
+def display_total_cost():
+    text_area.config(state=tk.NORMAL)
+    text_area.delete('1.0', tk.END)
+    total_cost = 0
+    for category, items in ITEMS.items():
+        text_area.insert(tk.END, f"{category}:\t\tMGP cost\n")
+        text_area.insert(tk.END, "------------------------------\n")
+        for item, cost in items.items():
+            text_area.insert(tk.END, f"{item}:\t{cost:,} MGP\n")
+        category_total = sum(items.values())
+        total_cost += category_total
+        text_area.insert(tk.END, f"\nTotal {category} cost:\t{category_total:,} MGP\n\n")
+    text_area.insert(tk.END, f"Grand total: {total_cost:,} MGP\n")
+    text_area.config(state=tk.DISABLED)
 
-def main():
-    print("Gold Saucer Item Lookup")
-    print("---------------")
-    print("Hello there!\n")
-    print("Which would you like to view?")
-    print("------------------------------")
-    print("Mounts:\t\tDisplays list of mounts and their MGP cost")
-    print("Emotes:\t\tDisplays list of emotes and their MGP cost")
-    print("Minions:\tDisplays list of minions and their MGP cost")
-    print("Hair:\t\tDisplays list of hairstyles and their MGP cost")
-    print("Others:\t\tDisplays list of other things and their MGP cost")
-    print("Total:\t\tDisplays combined total of all GS items")
-    print("Exit:\t\tExit program\n")
+# GUI setup
+root = tk.Tk()
+root.title("Gold Saucer Item Lookup")
 
-    while True:
-        user_input = input('Command: ').lower()
-        if user_input == 'mounts':
-            print_items(mounts, "Mounts")
-        elif user_input == 'emotes':
-            print_items(emotes, "Emotes")
-        elif user_input == 'minions':
-            print_items(minions, "Minions")
-        elif user_input == 'hair':
-            print_items(hairstyles, "Hairstyles")
-        elif user_input == 'others':
-            print_items(others, "Others")
-        elif user_input == 'total':
-            print_items(mounts, "Mounts")
-            print_items(emotes, "Emotes")
-            print_items(minions, "Minions")
-            print_items(hairstyles, "Hairstyles")
-            print_items(others, "Others")
-            print_total_cost()
-        elif user_input == 'exit':
-            break
-        else:
-            print('Invalid command\n')
+main_frame = ttk.Frame(root, padding="10")
+main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
 
-    print('GG, Have Fun farming.')
+# Text area for displaying items
+text_area = tk.Text(main_frame, wrap='word', width=60, height=20, state=tk.DISABLED)
+text_area.grid(row=0, column=0, columnspan=2, pady=(0, 10))
 
-if __name__ == '__main__':
-    main()
+# Buttons
+buttons = {
+    "Mounts": lambda: display_items(ITEMS["Mounts"], "Mounts"),
+    "Emotes": lambda: display_items(ITEMS["Emotes"], "Emotes"),
+    "Minions": lambda: display_items(ITEMS["Minions"], "Minions"),
+    "Hair": lambda: display_items(ITEMS["Hairstyles"], "Hairstyles"),
+    "Others": lambda: display_items(ITEMS["Others"], "Others"),
+    "Total": display_total_cost,
+    "Exit": root.quit
+}
+
+for i, (label, command) in enumerate(buttons.items()):
+    ttk.Button(main_frame, text=label, command=command).grid(row=1 + i, column=0, columnspan=2, sticky=(tk.W, tk.E))
+
+root.mainloop()
+
